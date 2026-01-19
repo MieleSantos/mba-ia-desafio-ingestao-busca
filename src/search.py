@@ -1,3 +1,7 @@
+from db.config import db_config
+from embeddings.config import embedding_config
+from loguru import logger
+
 PROMPT_TEMPLATE = """
 CONTEXTO:
 {contexto}
@@ -26,5 +30,25 @@ RESPONDA A "PERGUNTA DO USUÁRIO"
 """
 
 
+def vector_search(question: str):
+    """Realiza uma busca vetorial para encontrar os chunks mais relevantes."""
+    # Configurar embeddings e vector store
+    embeddings = embedding_config.get_embeddings()
+    vector_store = db_config.get_vector_store(embeddings)
+
+    # Realizar a busca vetorial
+    results = vector_store.similarity_search_with_score(query=question, k=10)
+    logger.info(f"Resultados da busca vetorial: {len(results)}")
+
+    filtered_docs = [doc for doc, score in results]  # if score < 0.3]
+    # for doc, score in results:
+    #     print("SCORE:", score)
+    #     print(doc.page_content[:300])
+    #     print("-----")
+    contexto = "\n\n".join([doc.page_content for doc in filtered_docs])
+    return contexto
+
+
 def search_prompt(question=None):
-    pass
+    contexto = vector_search(question)
+    return PROMPT_TEMPLATE.format(contexto=contexto, pergunta=question)

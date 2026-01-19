@@ -1,50 +1,57 @@
 from invoke import task
 import subprocess
 import sys
+from loguru import logger
+
 
 @task
 def format(c):
-    """Format code with black and isort"""
-    print("Running black...")
+    """Formata código com black e isort"""
+    logger.info("Executando black...")
     subprocess.run(["poetry", "run", "black", "src/"], check=True)
-    print("Running isort...")
+    logger.info("Executando isort...")
     subprocess.run(["poetry", "run", "isort", "src/"], check=True)
-    print("Code formatted successfully!")
+    logger.success("Código formatado com sucesso!")
+
 
 @task
 def lint(c):
-    """Run type checking with mypy"""
-    print("Running mypy...")
+    """Executa verificação de tipos com mypy"""
+    logger.info("Executando mypy...")
     result = subprocess.run(["poetry", "run", "mypy", "src/"])
     if result.returncode == 0:
-        print("Type checking passed!")
+        logger.success("Verificação de tipos aprovada!")
     else:
-        print("Type checking failed!")
+        logger.error("Falha na verificação de tipos!")
         sys.exit(1)
+
 
 @task
 def check(c):
-    """Run all checks: format and lint"""
+    """Executa todas as verificações: formatação e lint"""
     format(c)
     lint(c)
 
+
 @task
 def ingest(c):
-    """Run PDF ingestion"""
-    print("Running PDF ingestion...")
+    """Executa ingestão de PDF"""
+    logger.info("Executando ingestão de PDF...")
     subprocess.run(["poetry", "run", "python", "src/ingest.py"], check=True)
+
 
 @task
 def chat(c):
-    """Start chat interface"""
-    print("Starting chat interface...")
+    """Inicia interface de chat"""
+    logger.info("Iniciando interface de chat...")
     subprocess.run(["poetry", "run", "python", "src/chat.py"], check=True)
+
 
 @task
 def search(c, question=None):
-    """Run search with optional question"""
+    """Executa busca com pergunta opcional"""
     cmd = ["poetry", "run", "python", "src/search.py"]
     if question:
         cmd.extend(["--question", question])
-    print(f"Running search: {' '.join(cmd)}")
+    logger.info(f"Executando busca: {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
