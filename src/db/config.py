@@ -15,7 +15,7 @@ class DatabaseConfig:
         self.database_url = os.getenv("DATABASE_URL")
         self.collection_name = os.getenv("PG_VECTOR_COLLECTION_NAME", "rag_collection")
         self.embedding_model = os.getenv(
-            "GOOGLE_EMBEDDING_MODEL", "models/embedding-001"
+            "GOOGLE_EMBEDDING_MODEL", "text-embedding-004"
         )
 
         self._validate_config()

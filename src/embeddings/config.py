@@ -13,7 +13,9 @@ class EmbeddingConfig:
     def __init__(self) -> None:
         self.google_api_key = os.getenv("GOOGLE_API_KEY")
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
-        self.google_model = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/embedding-001")
+        self.google_model = os.getenv(
+            "GOOGLE_EMBEDDING_MODEL", "text-embedding-004"
+        )
         self.openai_model = os.getenv(
             "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
         )
