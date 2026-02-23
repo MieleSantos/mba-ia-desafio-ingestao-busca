@@ -40,12 +40,18 @@ def vector_search(question: str):
     results = vector_store.similarity_search_with_score(query=question, k=10)
     logger.info(f"Resultados da busca vetorial: {len(results)}")
 
-    filtered_docs = [doc for doc, score in results]  # if score < 0.3]
-    # for doc, score in results:
-    #     print("SCORE:", score)
-    #     print(doc.page_content[:300])
-    #     print("-----")
+    filtered_docs = [doc for doc, score in results]
     contexto = "\n\n".join([doc.page_content for doc in filtered_docs])
+
+    # Debug: confirme que o contexto está sendo montado (e se faz sentido reingerir ao trocar de modelo)
+    # logger.info(f"Contexto enviado ao LLM: {len(contexto)} caracteres")
+    # if contexto.strip():
+    #     logger.debug(f"Preview do contexto: {contexto.strip()[:400]}...")
+    # else:
+    #     logger.warning(
+    #         "Contexto vazio. Se você trocou o modelo de embedding, reexecute a ingestão (ingest)."
+    #     )
+
     return contexto
 
 
