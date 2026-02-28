@@ -122,21 +122,6 @@ O `chat.py` lê uma pergunta do usuário, busca os trechos relevantes no banco v
 └── .env                 # Variáveis de ambiente (não versionado)
 ```
 
-## Documentação
-
-A documentação é gerada com **MkDocs** (tema Material) e **mkdocstrings** (API a partir dos docstrings).
-
-```bash
-# Instalar dependências de desenvolvimento (inclui mkdocs)
-poetry install
-
-# Servir a documentação localmente (http://127.0.0.1:8000)
-poetry run mkdocs serve
-
-# Gerar o site estático em site/
-poetry run mkdocs build
-```
-
 ## Observações
 
 - **Embedding dimension**: o default é 768 (`EMBEDDING_DIMENSION=768`). Se alterar o modelo ou a dimensão, pode ser necessário reingerir o PDF para manter consistência no banco.
